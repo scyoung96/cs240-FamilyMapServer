@@ -50,7 +50,7 @@ public class Person {
      * @param spouseID The unique ID associated with the spouse of this Person
      */
     public Person(String personID, String associatedUsername, String firstName, String lastName, String gender, String fatherID, String motherID, String spouseID) {
-        personID = personID;
+        this.personID = personID;
         this.associatedUsername = associatedUsername;
         this.firstName = firstName;
         this.lastName = lastName;

@@ -8,7 +8,7 @@ CREATE TABLE "user" (
 	"personID"	TEXT NOT NULL UNIQUE,
 	FOREIGN KEY("personID") REFERENCES "person"("personID"),
 	PRIMARY KEY("username")
-)
+);
 
 CREATE TABLE "person" (
 	"personID"	TEXT NOT NULL UNIQUE,
@@ -21,7 +21,7 @@ CREATE TABLE "person" (
 	"spouseID"	TEXT,
 	PRIMARY KEY("personID"),
 	FOREIGN KEY("associatedUsername") REFERENCES "user"("username")
-)
+);
 
 CREATE TABLE "event" (
 	"eventID"	TEXT NOT NULL,
@@ -36,11 +36,11 @@ CREATE TABLE "event" (
 	FOREIGN KEY("associatedUsername") REFERENCES "user"("username"),
 	FOREIGN KEY("personID") REFERENCES "person"("personID"),
 	PRIMARY KEY("eventID")
-)
+);
 
 CREATE TABLE "authtoken" (
 	"authtoken"	TEXT NOT NULL,
 	"username"	TEXT NOT NULL,
 	FOREIGN KEY("username") REFERENCES "user"("username"),
 	PRIMARY KEY("authtoken")
-)
+);
