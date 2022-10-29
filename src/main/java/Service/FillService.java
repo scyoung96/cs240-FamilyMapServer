@@ -13,7 +13,7 @@ public class FillService {
      * @param r The Request to be performed
      * @return The Result of the attempt to perform the Request
      */
-    FillResult FillService(FillRequest r) {
+    public FillResult FillService(FillRequest r) {
 
         return null;
     }

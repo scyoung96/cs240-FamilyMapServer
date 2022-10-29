@@ -13,7 +13,7 @@ public class LoadService {
      * @param r The Request to be performed
      * @return The Result of the attempt to perform the Request
      */
-    LoadResult RegisterService(LoadRequest r) {
+    public LoadResult RegisterService(LoadRequest r) {
 
         return null;
     }

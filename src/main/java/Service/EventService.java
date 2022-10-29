@@ -13,7 +13,7 @@ public class EventService {
      * @param r The Request to be performed
      * @return The Result of the attempt to perform the Request
      */
-    EventResult EventService(EventRequest r) {
+    public EventResult EventService(EventRequest r) {
 
         return null;
     }

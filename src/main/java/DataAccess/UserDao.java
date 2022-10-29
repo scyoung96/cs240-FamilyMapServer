@@ -90,8 +90,25 @@ public class UserDao {
      * @throws DataAccessException Exception thrown when an error occurs accessing the Database
      */
     public User findUserByUsername(String username) throws DataAccessException {
+        User user;
+        ResultSet rs;
+        String sql = "SELECT * FROM user WHERE username = ?;";
 
-        return null;
+        try (PreparedStatement stmt = connection.prepareStatement(sql)) {
+            stmt.setString(1, username);
+            rs = stmt.executeQuery();
+            if (rs.next()) {
+                user = new User(rs.getString("username"), rs.getString("password"), rs.getString("email"), rs.getString("firstName"), rs.getString("lastName"), rs.getString("gender"), rs.getString("personID"));
+                return user;
+            }
+            else {
+                return null;
+            }
+        }
+        catch (SQLException e) {
+            e.printStackTrace();
+            throw new DataAccessException("Error encountered while finding user in the database");
+        }
     }
 
 // Update
@@ -143,6 +160,28 @@ public class UserDao {
      * @throws DataAccessException Exception thrown when an error occurs accessing the Database
      */
     public boolean validateUser(String username, String password) throws DataAccessException {
+        User user;
+        ResultSet rs;
+        String sql = "SELECT * FROM user WHERE username = ?;";
+
+        try (PreparedStatement stmt = connection.prepareStatement(sql)) {
+            stmt.setString(1, username);
+            rs = stmt.executeQuery();
+            if (rs.next()) {
+                user = new User(rs.getString("username"), rs.getString("password"), rs.getString("email"), rs.getString("firstName"), rs.getString("lastName"), rs.getString("gender"), rs.getString("personID"));
+
+                if (user.getPassword().equals(password)) {
+                    return true;
+                }
+            }
+            else {
+                return false;
+            }
+        }
+        catch (SQLException e) {
+            e.printStackTrace();
+            throw new DataAccessException("Error encountered while finding user in the database");
+        }
         return false;
     }
 }

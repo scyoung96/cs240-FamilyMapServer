@@ -13,7 +13,7 @@ public class PersonService {
      * @param r The Request to be performed
      * @return The Result of the attempt to perform the Request
      */
-    PersonResult PersonService(PersonRequest r) {
+    public PersonResult PersonService(PersonRequest r) {
 
         return null;
     }

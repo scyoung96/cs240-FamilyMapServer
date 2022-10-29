@@ -13,7 +13,7 @@ public class FamilyService {
      * @param r The Request to be performed
      * @return The Result of the attempt to perform the Request
      */
-    FamilyResult FamilyService(FamilyRequest r) {
+    public FamilyResult FamilyService(FamilyRequest r) {
 
         return null;
     }

@@ -1,6 +1,8 @@
 package DataAccess;
 
 import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
 import java.util.List;
 
 import Model.Event;
@@ -88,7 +90,14 @@ public class EventDao {
      * @throws DataAccessException Exception thrown when an error occurs accessing the Database
      */
     public void deleteAll() throws DataAccessException {
-
+        String sql = "DELETE FROM event";
+        try (PreparedStatement stmt = connection.prepareStatement(sql)) {
+            stmt.executeUpdate();
+        }
+        catch (SQLException e) {
+            e.printStackTrace();
+            throw new DataAccessException("Error encountered while clearing the event table");
+        }
     }
 
     /**

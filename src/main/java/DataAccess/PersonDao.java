@@ -1,7 +1,6 @@
 package DataAccess;
 
 import Model.Person;
-import Model.User;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;

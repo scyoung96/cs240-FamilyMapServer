@@ -1,8 +1,12 @@
 package DataAccess;
 
 import Model.Authtoken;
+import Model.User;
 
 import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 
 /**
  * Inserts, queries, updates, and deletes Authtokens
@@ -29,7 +33,18 @@ public class AuthtokenDao {
      * @throws DataAccessException Exception thrown when an error occurs accessing the Database
      */
     public void create(Authtoken authtoken) throws DataAccessException {
+        String sql = "INSERT INTO authtoken (authtoken, username) VALUES(?,?)";
 
+        try (PreparedStatement stmt = connection.prepareStatement(sql)) {
+            stmt.setString(1, authtoken.getAuthtoken());
+            stmt.setString(2, authtoken.getUsername());
+
+            stmt.executeUpdate();
+        }
+        catch (SQLException e) {
+            e.printStackTrace();
+            throw new DataAccessException("Error encountered while inserting authtoken into the database");
+        }
     }
 
 // Query
@@ -41,8 +56,24 @@ public class AuthtokenDao {
      * @throws DataAccessException Exception thrown when an error occurs accessing the Database
      */
     public String findAuthtokenByUsername(String username) throws DataAccessException {
+        ResultSet rs;
+        String sql = "SELECT * FROM authtoken WHERE username = ?;";
 
-        return null;
+        try (PreparedStatement stmt = connection.prepareStatement(sql)) {
+            stmt.setString(1, username);
+            rs = stmt.executeQuery();
+            if (rs.next()) {
+                String authtoken = rs.getString("authtoken");
+                return authtoken;
+            }
+            else {
+                return null;
+            }
+        }
+        catch (SQLException e) {
+            e.printStackTrace();
+            throw new DataAccessException("Error encountered while finding user in the database");
+        }
     }
 
     /**
@@ -86,7 +117,14 @@ public class AuthtokenDao {
      * @throws DataAccessException Exception thrown when an error occurs accessing the Database
      */
     public void deleteAll() throws DataAccessException {
-
+        String sql = "DELETE FROM authtoken";
+        try (PreparedStatement stmt = connection.prepareStatement(sql)) {
+            stmt.executeUpdate();
+        }
+        catch (SQLException e) {
+            e.printStackTrace();
+            throw new DataAccessException("Error encountered while clearing the authtoken table");
+        }
     }
 
     /**
