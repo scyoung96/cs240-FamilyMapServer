@@ -22,4 +22,16 @@ public class LoadResult {
         this.message = message;
         this.success = success;
     }
+
+    public void setMessage(String message) {
+        this.message = message;
+    }
+
+    public void setSuccess(boolean success) {
+        this.success = success;
+    }
+
+    public boolean isSuccess() {
+        return success;
+    }
 }

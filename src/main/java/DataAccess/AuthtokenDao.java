@@ -84,8 +84,24 @@ public class AuthtokenDao {
      * @throws DataAccessException Exception thrown when an error occurs accessing the Database
      */
     public String findUsernameByAuthtoken(String authtoken) throws DataAccessException {
+        ResultSet rs;
+        String sql = "SELECT * FROM authtoken WHERE authtoken = ?;";
 
-        return null;
+        try (PreparedStatement stmt = connection.prepareStatement(sql)) {
+            stmt.setString(1, authtoken);
+            rs = stmt.executeQuery();
+            if (rs.next()) {
+                String username = rs.getString("username");
+                return username;
+            }
+            else {
+                return null;
+            }
+        }
+        catch (SQLException e) {
+            e.printStackTrace();
+            throw new DataAccessException("Error encountered while finding user in the database");
+        }
     }
 
 // Update

@@ -33,4 +33,16 @@ public class LoadRequest {
         this.persons = persons;
         this.events = events;
     }
+
+    public User[] getUsers() {
+        return users;
+    }
+
+    public Person[] getPersons() {
+        return persons;
+    }
+
+    public Event[] getEvents() {
+        return events;
+    }
 }

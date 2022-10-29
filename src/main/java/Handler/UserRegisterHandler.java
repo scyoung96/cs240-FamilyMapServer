@@ -1,5 +1,4 @@
 // TODO: generate 4 generations of  ancestor data (call /fill with a value of 4 and the username?)
-// TODO: log the user in
 
 package Handler;
 
@@ -8,7 +7,10 @@ import java.net.*;
 import java.util.*;
 
 import Request.RegisterRequest;
+import Request.FillRequest;
+import Result.FillResult;
 import Result.RegisterResult;
+import Service.FillService;
 import Service.RegisterService;
 
 import com.google.gson.Gson;
@@ -40,11 +42,11 @@ public class UserRegisterHandler implements HttpHandler {
                 Map<String, String> reqData = new Gson().fromJson(reqDataString, Map.class);
 
                 RegisterRequest request = new RegisterRequest(reqData.get("username"),
-                                                                 reqData.get("password"),
-                                                                 reqData.get("email"),
-                                                                 reqData.get("firstName"),
-                                                                 reqData.get("lastName"),
-                                                                 reqData.get("gender"));
+                                                              reqData.get("password"),
+                                                              reqData.get("email"),
+                                                              reqData.get("firstName"),
+                                                              reqData.get("lastName"),
+                                                              reqData.get("gender"));
 
                 RegisterService service = new RegisterService();
                 RegisterResult result = service.RegisterService(request);
@@ -73,6 +75,12 @@ public class UserRegisterHandler implements HttpHandler {
                 respBody.close();
 
                 success = true;
+
+                FillRequest fillRequest = new FillRequest(reqData.get("username"),
+                                                      4);
+
+                FillService fillService = new FillService();
+                FillResult fillResult = fillService.FillService(fillRequest);
             }
 
             if (!success) {

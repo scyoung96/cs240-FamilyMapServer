@@ -2,7 +2,6 @@ package Handler;
 
 import java.io.*;
 import java.net.*;
-import java.util.*;
 
 import Request.FillRequest;
 import Result.FillResult;
@@ -27,17 +26,27 @@ public class FillHandler implements HttpHandler {
                 InputStream reqBody = exchange.getRequestBody();
 
                 // Read JSON string from the input stream
-                String reqDataString = readString(reqBody);
-
+                String reqDataString = exchange.getRequestURI().toString();
                 // Display/log the request JSON data
 //                System.out.println(reqDataString);
 
 // BASICALLY, GET ALL THE REQUEST DATA OUT OF THE JSON, CREATE A Request, CALL Service,
 // SAVE THE RESULT IN A Result, AND THEN RE-JSONIFY IT TO SEND BACK IN THE RESPONSE
-                Map<String, String> reqData = new Gson().fromJson(reqDataString, Map.class);
+                int separator = reqDataString.indexOf('/', 6);
+                String username;
+                String generations;
+                if (separator > 0) {
+                    username = reqDataString.substring(6, separator);
+                    generations = reqDataString.substring(separator + 1);
+                }
+                else {
+                    username = reqDataString.substring(6);
+                    generations = "4";
+                }
 
-                FillRequest request = new FillRequest(reqData.get("username"),
-                                                      Integer.parseInt(reqData.get("generations")));
+
+                FillRequest request = new FillRequest(username,
+                                                      Integer.parseInt(generations));
 
                 FillService service = new FillService();
                 FillResult result = service.FillService(request);

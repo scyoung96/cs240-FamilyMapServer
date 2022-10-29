@@ -23,4 +23,12 @@ public class PersonRequest {
         this.personID = personID;
         this.authtoken = authtoken;
     }
+
+    public String getPersonID() {
+        return personID;
+    }
+
+    public String getAuthtoken() {
+        return authtoken;
+    }
 }

@@ -31,7 +31,7 @@ public class UserDaoTest {
     @Test
     public void createPass() throws DataAccessException {
         testUserDao.create(testUser);
-        User checkCreate = testUserDao.findByPersonID("123456");
+        User checkCreate = testUserDao.findUserByPersonID("123456");
 
         // Check to make sure that the User was inserted successfully by inserting, then querying it and making sure the result isn't null
         assertNotNull(checkCreate);
@@ -52,8 +52,8 @@ public class UserDaoTest {
         User newUser = new User("newUsername", "newPassword", "newEmail", "newFirst", "newLast", "m", "234567");
         testUserDao.create(newUser);
 
-        User findTestUser = testUserDao.findByPersonID("123456");
-        User findNewUser = testUserDao.findByPersonID("234567");
+        User findTestUser = testUserDao.findUserByPersonID("123456");
+        User findNewUser = testUserDao.findUserByPersonID("234567");
 
         // Insert 2 users into the db and make sure we can find each of them by their ID
         assertNotNull(findTestUser);
@@ -64,7 +64,7 @@ public class UserDaoTest {
     public void findByIDFail() throws DataAccessException {
         testUserDao.create(testUser);
 
-        User findTestUser = testUserDao.findByPersonID("234567");
+        User findTestUser = testUserDao.findUserByPersonID("234567");
 
         // Insert a user with ID "123456" and then search for a user with a different ID
         assertNull(findTestUser);
@@ -76,14 +76,14 @@ public class UserDaoTest {
     @Test
     public void clearTest() throws DataAccessException {
         testUserDao.create(testUser);
-        User findTestUser = testUserDao.findByPersonID("123456");
+        User findTestUser = testUserDao.findUserByPersonID("123456");
 
         // first, make sure insert works
         assertNotNull(findTestUser);
 
         testUserDao.deleteAll();
 
-        findTestUser = testUserDao.findByPersonID("123456");
+        findTestUser = testUserDao.findUserByPersonID("123456");
 
         // after the clear, make sure searching that worked previously no longer works
         assertNull(findTestUser);

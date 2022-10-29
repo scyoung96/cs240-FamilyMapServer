@@ -6,6 +6,8 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Inserts, queries, updates, and deletes Persons
@@ -86,13 +88,39 @@ public class PersonDao {
     /**
      * Gets a Person from the Database by associatedUsername
      *
-     * @param associatedUsername The associatedUsername associated with the Person to get
+     * @param username The associatedUsername associated with the Person to get
      * @return The Person associated with the associatedUsernam if one exists, else null
      * @throws DataAccessException Exception thrown when an error occurs accessing the Database
      */
-    public Person findByAssociatedUsername(String associatedUsername) throws DataAccessException {
+    public List<Person> findByAssociatedUsername(String username) throws DataAccessException {
+        Person person;
+        ResultSet rs;
+        String sql = "SELECT * FROM person WHERE associatedUsername = ?;";
 
-        return null;
+        List persons = new ArrayList();
+
+        try (PreparedStatement stmt = connection.prepareStatement(sql)) {
+            stmt.setString(1, username);
+            rs = stmt.executeQuery();
+            if (rs.next()) {
+                person = new Person(rs.getString("personID"), rs.getString("associatedUsername"), rs.getString("firstName"), rs.getString("lastName"), rs.getString("gender"), rs.getString("fatherID"), rs.getString("motherID"), rs.getString("spouseID"));
+                persons.add(person);
+
+                while(rs.next()) {
+                    person = new Person(rs.getString("personID"), rs.getString("associatedUsername"), rs.getString("firstName"), rs.getString("lastName"), rs.getString("gender"), rs.getString("fatherID"), rs.getString("motherID"), rs.getString("spouseID"));
+                    persons.add(person);
+                }
+
+                return persons;
+            }
+            else {
+                return null;
+            }
+        }
+        catch (SQLException e) {
+            e.printStackTrace();
+            throw new DataAccessException("Error encountered while finding person in the database");
+        }
     }
 
     /**
@@ -169,6 +197,34 @@ public class PersonDao {
         catch (SQLException e) {
             e.printStackTrace();
             throw new DataAccessException("Error encountered while clearing the person table");
+        }
+    }
+
+
+    /**
+     * Removes all Persons from the Database for a specified username
+     *
+     * @param username The username associated with the User whose Persons to delete
+     * @throws DataAccessException Exception thrown when an error occurs accessing the Database
+     */
+    public void deleteAllForUsername(String username) throws DataAccessException {
+        ResultSet rs;
+        String sql = "DELETE FROM person WHERE associatedUsername = ?;";
+
+        try (PreparedStatement stmt = connection.prepareStatement(sql)) {
+            stmt.setString(1, username);
+//            rs = stmt.executeQuery();
+//            if (rs.next()) {
+//
+//            }
+//            else {
+//
+//            }
+            stmt.executeUpdate();
+        }
+        catch (SQLException e) {
+            e.printStackTrace();
+            throw new DataAccessException("Error encountered while clearing the person table for username specified");
         }
     }
 

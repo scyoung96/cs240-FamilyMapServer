@@ -60,7 +60,7 @@ public class UserDao {
      * @return The User associated with the personID if one exists, else null
      * @throws DataAccessException Exception thrown when an error occurs accessing the Database
      */
-    public User findByPersonID(String personID) throws DataAccessException {
+    public User findUserByPersonID(String personID) throws DataAccessException {
         User user;
         ResultSet rs;
         String sql = "SELECT * FROM user WHERE personID = ?;";

@@ -23,4 +23,12 @@ public class EventRequest {
         this.eventID = eventID;
         this.authtoken = authtoken;
     }
+
+    public String getEventID() {
+        return eventID;
+    }
+
+    public String getAuthtoken() {
+        return authtoken;
+    }
 }
