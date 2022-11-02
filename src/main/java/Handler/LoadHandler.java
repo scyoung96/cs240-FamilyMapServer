@@ -74,9 +74,18 @@ public class LoadHandler implements HttpHandler {
                 arrCount = 0;
 
                 for (Map<String, String> eventObj : eventList) {
+                    // regex manipulation: replaces all spaces in every property for the events with underscores (_)
                     String eventObjStr = eventObj.toString().replaceAll("([a-zA-Z]+?) ([a-zA-Z]+?)", "$1_$2");
                     String eventObjStr2 = eventObjStr.replaceAll("([a-zA-Z]+?) ([a-zA-Z]+?)", "$1_$2");
                     Event event = new Gson().fromJson(eventObjStr2, Event.class);
+
+                    // we don't want underscores in country, city, or eventType, so change them back to spaces
+                    event.setCountry(event.getCountry().replaceAll("([a-zA-Z]+?)_([a-zA-Z]+?)", "$1 $2"));
+                    event.setCountry(event.getCountry().replaceAll("([a-zA-Z]+?)_([a-zA-Z]+?)", "$1 $2"));
+                    event.setCity(event.getCity().replaceAll("([a-zA-Z]+?)_([a-zA-Z]+?)", "$1 $2"));
+                    event.setCity(event.getCity().replaceAll("([a-zA-Z]+?)_([a-zA-Z]+?)", "$1 $2"));
+                    event.setEventType(event.getEventType().replaceAll("([a-zA-Z]+?)_([a-zA-Z]+?)", "$1 $2"));
+                    event.setEventType(event.getEventType().replaceAll("([a-zA-Z]+?)_([a-zA-Z]+?)", "$1 $2"));
 
                     eventArr[arrCount] = event;
 
@@ -84,8 +93,8 @@ public class LoadHandler implements HttpHandler {
                 }
 
                 LoadRequest request = new LoadRequest(userArr,
-                                                      personArr,
-                                                      eventArr);
+                        personArr,
+                        eventArr);
 
                 LoadService service = new LoadService();
                 LoadResult result = service.LoadService(request);

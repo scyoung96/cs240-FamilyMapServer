@@ -47,7 +47,7 @@ public class UserDaoTest {
 
 // Query
     @Test
-    public void findByIDPass() throws DataAccessException {
+    public void findUserByPersonIDPass() throws DataAccessException {
         testUserDao.create(testUser);
         User newUser = new User("newUsername", "newPassword", "newEmail", "newFirst", "newLast", "m", "234567");
         testUserDao.create(newUser);
@@ -61,7 +61,7 @@ public class UserDaoTest {
     }
 
     @Test
-    public void findByIDFail() throws DataAccessException {
+    public void findUserByPersonIDFail() throws DataAccessException {
         testUserDao.create(testUser);
 
         User findTestUser = testUserDao.findUserByPersonID("234567");
@@ -70,11 +70,36 @@ public class UserDaoTest {
         assertNull(findTestUser);
     }
 
+    @Test
+    public void findUserByUsernamePass() throws DataAccessException {
+        testUserDao.create(testUser);
+        User newUser = new User("newUsername", "newPassword", "newEmail", "newFirst", "newLast", "m", "234567");
+        testUserDao.create(newUser);
+
+        User findTestUser = testUserDao.findUserByUsername("newUsername");
+        User findNewUser = testUserDao.findUserByUsername("newUsername");
+
+        // Insert 2 users into the db and make sure we can find each of them by their ID
+        assertNotNull(findTestUser);
+        assertNotNull(findNewUser);
+    }
+
+    @Test
+    public void findUserByUsernameFail() throws DataAccessException {
+        testUserDao.create(testUser);
+
+        User findTestUser = testUserDao.findUserByUsername("wrongUsername");
+
+        // Insert a user with username "newUsername" and then search for a user with a different username
+        assertNull(findTestUser);
+    }
+
+
 // Update
 
 // Delete
     @Test
-    public void clearTest() throws DataAccessException {
+    public void deleteAllTest() throws DataAccessException {
         testUserDao.create(testUser);
         User findTestUser = testUserDao.findUserByPersonID("123456");
 
@@ -87,5 +112,26 @@ public class UserDaoTest {
 
         // after the clear, make sure searching that worked previously no longer works
         assertNull(findTestUser);
+    }
+
+// Other functionality
+    @Test
+    public void validateUserPass() throws DataAccessException {
+        testUserDao.create(testUser);
+
+        boolean find = testUserDao.validateUser("testUsername", "testPassword");
+
+        // insert a user with username "testUsername" and password "testPassword" and assert that it was inserted with the correct information
+        assertTrue(find);
+    }
+
+    @Test
+    public void validateUserFail() throws DataAccessException {
+        testUserDao.create(testUser);
+
+        boolean find = testUserDao.validateUser("wrongUsername", "wrongPassword");
+
+        // insert a user with username "testUsername" and password "testPassword" and assert that searching for them with the wrong information does not return them
+        assertFalse(find);
     }
 }

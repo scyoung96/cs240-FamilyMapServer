@@ -24,7 +24,7 @@ CREATE TABLE "person" (
 );
 
 CREATE TABLE "event" (
-	"eventID"	TEXT NOT NULL,
+	"eventID"	TEXT NOT NULL UNIQUE,
 	"associatedUsername"	TEXT NOT NULL,
 	"personID"	TEXT NOT NULL,
 	"latitude"	REAL NOT NULL,

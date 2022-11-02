@@ -38,7 +38,7 @@ public class FillService {
             User user = userDao.findUserByUsername(r.getUsername());
             if (user != null) {
                 if (r.getGenerations() > -1) {
-                    String f_in = Files.readString(Path.of("passOffFiles/LoadData.json"));
+                    String f_in = Files.readString(Path.of("passoffFiles/LoadData.json"));
                     Map<String, List<Map<String, String>>> loadData = new Gson().fromJson(f_in, Map.class);
 
                     personDao.deleteAllForUsername(r.getUsername());
@@ -57,7 +57,7 @@ public class FillService {
                     for (int i = r.getGenerations(); i > 0; i--) {
                         for (int numToGen = (int)Math.pow(2, i-1); numToGen > 0; numToGen--) {
 
-                            String spouseID = UUID.randomUUID().toString();
+                            String motherPersonID = UUID.randomUUID().toString();
                             float marriageLatitude = -90 + rand.nextFloat() * (180);
                             float marriageLongitude = -180 + rand.nextFloat() * (360);
 
@@ -67,10 +67,10 @@ public class FillService {
 
                             String fatherFatherID = null;
                             String fatherMotherID = null;
-                            // if this is the first loop (and thus the 'highest/oldest' level), generate random parent data
+                            // if this is the first loop (and thus the 'highest/oldest' level), generate no parent data
                             if (i == r.getGenerations()) {
-                                fatherFatherID = UUID.randomUUID().toString();
-                                fatherMotherID = UUID.randomUUID().toString();
+                                fatherFatherID = null;
+                                fatherMotherID = null;
                             }
                             // in subsequent loops, pull from the previous generation's IDs
                             else {
@@ -84,7 +84,7 @@ public class FillService {
                             }
                             while (!randomFather.get("gender").equals("m"));
 
-                            Person father = new Person(fatherPersonID, r.getUsername(), randomFather.get("firstName"), randomFather.get("lastName"), "m", fatherFatherID, fatherMotherID, spouseID);
+                            Person father = new Person(fatherPersonID, r.getUsername(), randomFather.get("firstName"), randomFather.get("lastName"), "m", fatherFatherID, fatherMotherID, motherPersonID);
 
                             // GENERATE FATHER EVENTS
                             String fatherBirthId = UUID.randomUUID().toString();
@@ -104,15 +104,14 @@ public class FillService {
 
 
                             // GENERATE RANDOM MOTHER
-                            String motherPersonID = UUID.randomUUID().toString();
                             motherIDsNextGen.push(motherPersonID);
 
                             String motherFatherID = null;
                             String motherMotherID = null;
-                            // if this is the first loop (and thus the 'highest/oldest' level), generate random parent data
+                            // if this is the first loop (and thus the 'highest/oldest' level), generate no parent data
                             if (i == r.getGenerations()) {
-                                motherFatherID = UUID.randomUUID().toString();
-                                motherMotherID = UUID.randomUUID().toString();
+                                motherFatherID = null;
+                                motherMotherID = null;
                             }
                             // in subsequent loops, pull from the previous generation's IDs
                             else {
@@ -126,7 +125,7 @@ public class FillService {
                             }
                             while (!randomMother.get("gender").equals("f"));
 
-                            Person mother = new Person(motherPersonID, r.getUsername(), randomMother.get("firstName"), randomMother.get("lastName"), "f", motherFatherID, motherMotherID, spouseID);
+                            Person mother = new Person(motherPersonID, r.getUsername(), randomMother.get("firstName"), randomMother.get("lastName"), "f", motherFatherID, motherMotherID, fatherPersonID);
 
                             // GENERATE MOTHER EVENTS
                             String motherBirthId = UUID.randomUUID().toString();

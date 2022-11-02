@@ -5,10 +5,12 @@ import DataAccess.DataAccessException;
 import DataAccess.Database;
 import DataAccess.UserDao;
 import Model.User;
+import Model.Authtoken;
 import Request.LoginRequest;
 import Result.LoginResult;
 
 import java.sql.Connection;
+import java.util.UUID;
 
 /**
  * Used to attempt to log in the User specified in the request
@@ -31,6 +33,11 @@ public class LoginService {
         try {
             if (userDao.validateUser(r.getUsername(), r.getPassword())) {
                 String authtokenStr = authtokenDao.findAuthtokenByUsername(r.getUsername());
+                if (authtokenStr == null) {
+                    authtokenStr = UUID.randomUUID().toString();
+                    Authtoken newAuthtoken = new Authtoken(authtokenStr, r.getUsername());
+                    authtokenDao.create(newAuthtoken);
+                }
                 User user = userDao.findUserByUsername(r.getUsername());
                 String personID = user.getPersonID();
 

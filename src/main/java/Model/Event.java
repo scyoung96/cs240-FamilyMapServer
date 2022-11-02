@@ -137,4 +137,30 @@ public class Event {
     public void setYear(int year) {
         this.year = year;
     }
+
+    @Override
+    public boolean equals(Object o) {
+        Event obj = (Event)o;
+
+        if (this.eventID == obj.getEventID()) {
+            if (this.associatedUsername == obj.getAssociatedUsername()) {
+                if (this.personID == obj.getPersonID()) {
+                    if (this.latitude == obj.getLatitude()) {
+                        if (this.longitude == obj.getLongitude()) {
+                            if (this.country == obj.getCountry()) {
+                                if (this.city == obj.getCity()) {
+                                    if (this.eventType == obj.getEventType()) {
+                                        if (this.year == obj.getYear()) {
+                                            return true;
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        return true;
+    }
 }

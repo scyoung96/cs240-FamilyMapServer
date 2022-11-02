@@ -1,8 +1,14 @@
 package Request;
 
+import DataAccess.Database;
+import DataAccess.EventDao;
 import Model.Event;
 import Model.Person;
 import Model.User;
+
+import java.sql.Connection;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Used to load the provided 'User', 'Person', and 'Event' data into the database
@@ -42,7 +48,16 @@ public class LoadRequest {
         return persons;
     }
 
-    public Event[] getEvents() {
-        return events;
-    }
+    public Event[] getEvents() { return events; }
+
+//    public Event[] getEvents(String username) {
+//        List<Event> userEvents = new ArrayList<>();
+//
+//        for (Event event : events) {
+//            if (event.getAssociatedUsername().equals(username)) {
+//                userEvents.add(event);
+//            }
+//        }
+//        return userEvents.toArray(new Event[0]);
+//    }
 }
